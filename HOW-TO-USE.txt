@@ -1,0 +1,80 @@
+============================================
+   AI GOLF CADDY - HOW TO USE (SUPER EASY!)
+============================================
+
+NO CODING REQUIRED - JUST OPEN THE FILE!
+
+STEP 1: Find the file
+---------------------
+Look for a file called: ai-golf-caddy.html
+
+STEP 2: Open it
+---------------
+Double-click on "ai-golf-caddy.html"
+
+That's it! The app will open in your web browser (Chrome, Firefox, Safari, Edge, etc.)
+
+
+WHAT YOU'LL SEE:
+================
+
+The app has 5 tabs at the top:
+
+1. RECOMMEND 🎯
+   - Enter how far you need to hit
+   - Set wind, temperature, and lie conditions
+   - Click "Get Recommendations"
+   - The app tells you which club to use!
+
+2. LOG SHOT ➕
+   - After you hit a shot, record it here
+   - Pick your club, enter the distance
+   - Add weather conditions
+   - This helps the app learn YOUR game
+
+3. SCORECARD 🏆
+   - Choose a Denver golf course from the dropdown
+   - Or use the Generic Course for any course
+   - Enter your score for each hole
+   - See if you're over/under par
+
+4. STATS 📊
+   - See your accuracy with each club
+   - Find out which clubs you hit best
+   - View average distances
+
+5. HISTORY 📜
+   - See all the shots you've logged
+   - Review past performance
+
+
+IMPORTANT NOTES:
+================
+
+✅ All your data is saved automatically in your browser
+✅ Works offline after the first load
+✅ No account needed, no sign-up
+✅ Completely free
+✅ Works on phones, tablets, and computers
+
+❌ Don't delete your browser data or you'll lose your stats
+❌ Data is only on YOUR device (not shared anywhere)
+
+
+TROUBLESHOOTING:
+================
+
+Q: The file won't open!
+A: Make sure it ends in .html - Try right-clicking it and choosing "Open With" → Your Web Browser
+
+Q: I see code instead of the app!
+A: You opened it in a text editor. Right-click → Open With → Chrome (or your browser)
+
+Q: My data disappeared!
+A: Did you clear your browser cache/cookies? That deletes the data. It's stored locally.
+
+Q: Can I use this on my phone?
+A: Yes! Transfer the ai-golf-caddy.html file to your phone and open it in your mobile browser.
+
+
+THAT'S IT! ENJOY YOUR GOLF GAME! ⛳🏌️
