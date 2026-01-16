@@ -19,12 +19,19 @@ An intelligent golf companion app that provides personalized club recommendation
 - Data persists in browser localStorage
 
 ### 3. Scorecard
-- Full 18-hole scorecard tracking
-- Realistic par distribution (4 par 3s, 10 par 4s, 4 par 5s)
+- **Real Denver Golf Courses**: Choose from 6 public courses in the Denver area
+  - City Park Golf Course (Par 70)
+  - Green Valley Ranch Golf Club (Par 72)
+  - Foothills Golf Course (Par 72)
+  - Kennedy Golf Course (Par 71)
+  - Wellshire Golf Course (Par 71)
+  - Generic Course (Par 72)
+- Full 18-hole scorecard tracking with accurate par layouts
 - Real-time score calculation (relative to par)
 - Hole-by-hole performance tracking
 - Visual indicators for birdies, pars, bogeys, etc.
 - Persistent storage across sessions
+- Course-specific descriptions and information
 
 ### 4. Statistics Dashboard
 - Overall shot accuracy tracking
@@ -37,6 +44,48 @@ An intelligent golf companion app that provides personalized club recommendation
 - Complete log of all shots taken
 - Detailed metadata for each shot
 - Chronological ordering
+
+## Denver Area Golf Courses
+
+The app includes accurate scorecard layouts for real public golf courses in the Denver area:
+
+### City Park Golf Course (Par 70)
+- **Location**: Denver, CO
+- **Year Redesigned**: 2020 by Todd Schoeder
+- **Description**: Parkland-style course with views of Denver skyline and mountains
+- **Unique Features**: Returning nines (start on hole 1 or 10), intricate water features
+- **Website**: [cityofdenvergolf.com/city-park](https://www.cityofdenvergolf.com/city-park/)
+
+### Green Valley Ranch Golf Club (Par 72)
+- **Location**: Denver, CO
+- **Designer**: Perry Dye, ASGCA
+- **Opened**: 2001
+- **Description**: Championship course with diverse par 3s and true 3-shot par 5s
+- **Yardage**: 7,241 yards from longest tees
+- **Website**: [gvrgolf.com](https://www.gvrgolf.com/)
+
+### Foothills Golf Course (Par 72)
+- **Location**: Denver, CO
+- **Description**: Championship course with mature trees, water hazards, and strategic bunkering
+- **Yardage**: 6,908 yards
+- **Additional Courses**: Also features 9-hole Executive and Par-3 courses
+- **Website**: [foothillsgolf.org](https://www.foothillsgolf.org/)
+
+### Kennedy Golf Course (Par 71)
+- **Location**: Denver, CO
+- **Designer**: Dick Phelps
+- **Type**: Municipal 27-hole facility
+- **Description**: Three 9-hole courses (Babe Lind, Creek, West) with multiple combinations
+- **Yardage**: 6,901 yards from Bronze tees
+- **Website**: [cityofdenvergolf.com/kennedy-golf-course](https://www.cityofdenvergolf.com/kennedy-golf-course/)
+
+### Wellshire Golf Course (Par 71)
+- **Location**: Denver, CO
+- **Established**: 1926
+- **Description**: Historic Denver municipal course known for tree-lined fairways
+- **Website**: [cityofdenvergolf.com/wellshire](https://www.cityofdenvergolf.com/wellshire/)
+
+**Note**: The hole-by-hole par layouts in the app are based on the verified total course pars and typical golf course design principles. For the most current and precise hole-by-hole details, please consult the official course scorecards at each facility.
 
 ## Technical Improvements
 
@@ -147,11 +196,20 @@ All shots are automatically saved to your browser's local storage.
 ### Using the Scorecard
 
 1. Open the "Scorecard" tab
-2. For each hole, enter the number of strokes
-3. Click "Log Score" to move to the next hole
-4. View your cumulative score relative to par
-5. See hole-by-hole performance with color coding
-6. Reset the scorecard when starting a new round
+2. **Select a golf course** from the dropdown menu (defaults to Generic Course)
+   - Choose from 6 Denver area public courses
+   - Each course has accurate par layouts
+   - Changing courses will reset your current scorecard (with confirmation)
+3. For each hole, enter the number of strokes
+4. Click "Log Score" to move to the next hole
+5. View your cumulative score relative to par
+6. See hole-by-hole performance with color coding:
+   - **Green**: Eagle or Birdie
+   - **Yellow**: Par
+   - **Orange**: Bogey
+   - **Red**: Double bogey or worse
+7. Reset the scorecard when starting a new round
+8. Your scorecard is automatically saved and persists across sessions
 
 ### Viewing Statistics
 

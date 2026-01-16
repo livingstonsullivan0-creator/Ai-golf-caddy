@@ -1,8 +1,19 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { Trophy, Target, BarChart3, History, Plus, TrendingUp, RotateCcw } from 'lucide-react';
+import { denverGolfCourses, getCourseList, getCourse } from './golfCourses';
 
 export default function AIGolfCaddy() {
   const [activeTab, setActiveTab] = useState('recommend');
+
+  // Load selected course from localStorage or use default
+  const [selectedCourse, setSelectedCourse] = useState(() => {
+    try {
+      const saved = localStorage.getItem('selectedCourse');
+      return saved || 'generic';
+    } catch (error) {
+      return 'generic';
+    }
+  });
 
   // Load shots from localStorage or use empty array
   const [shots, setShots] = useState(() => {
@@ -30,30 +41,27 @@ export default function AIGolfCaddy() {
   const [logTemp, setLogTemp] = useState(70);
   const [logLie, setLogLie] = useState('Fairway');
 
-  // Load scorecard from localStorage or initialize default
+  // Load scorecard from localStorage or initialize from selected course
   const [scorecard, setScorecard] = useState(() => {
     try {
       const saved = localStorage.getItem('golfScorecard');
-      if (saved) {
+      const savedCourse = localStorage.getItem('scorecardCourse');
+      const currentCourse = localStorage.getItem('selectedCourse') || 'generic';
+
+      // If we have a saved scorecard for the current course, use it
+      if (saved && savedCourse === currentCourse) {
         return JSON.parse(saved);
       }
     } catch (error) {
       console.error('Error loading scorecard from localStorage:', error);
     }
-    // Default scorecard with realistic par distribution
-    return Array.from({ length: 18 }, (_, i) => {
-      const hole = i + 1;
-      let par;
-      // Typical golf course: 4 par 3s, 10 par 4s, 4 par 5s
-      if (hole === 3 || hole === 8 || hole === 12 || hole === 16) {
-        par = 3; // Par 3s
-      } else if (hole === 5 || hole === 9 || hole === 14 || hole === 18) {
-        par = 5; // Par 5s
-      } else {
-        par = 4; // Par 4s
-      }
-      return { hole, par, strokes: null };
-    });
+
+    // Initialize scorecard from selected course
+    const course = getCourse(selectedCourse);
+    return course.holes.map(hole => ({
+      ...hole,
+      strokes: null
+    }));
   });
 
   const [currentHole, setCurrentHole] = useState(() => {
@@ -96,10 +104,11 @@ export default function AIGolfCaddy() {
   useEffect(() => {
     try {
       localStorage.setItem('golfScorecard', JSON.stringify(scorecard));
+      localStorage.setItem('scorecardCourse', selectedCourse);
     } catch (error) {
       console.error('Error saving scorecard to localStorage:', error);
     }
-  }, [scorecard]);
+  }, [scorecard, selectedCourse]);
 
   // Save current hole to localStorage whenever it changes
   useEffect(() => {
@@ -109,6 +118,15 @@ export default function AIGolfCaddy() {
       console.error('Error saving current hole to localStorage:', error);
     }
   }, [currentHole]);
+
+  // Save selected course to localStorage whenever it changes
+  useEffect(() => {
+    try {
+      localStorage.setItem('selectedCourse', selectedCourse);
+    } catch (error) {
+      console.error('Error saving selected course to localStorage:', error);
+    }
+  }, [selectedCourse]);
 
   const getCalibratedDistance = useCallback((clubName) => {
     const clubShots = shots.filter(s => s.club === clubName && s.actualDistance);
@@ -317,23 +335,34 @@ export default function AIGolfCaddy() {
 
   const resetScorecard = useCallback(() => {
     if (window.confirm('Are you sure you want to reset the scorecard?')) {
-      const newScorecard = Array.from({ length: 18 }, (_, i) => {
-        const hole = i + 1;
-        let par;
-        if (hole === 3 || hole === 8 || hole === 12 || hole === 16) {
-          par = 3;
-        } else if (hole === 5 || hole === 9 || hole === 14 || hole === 18) {
-          par = 5;
-        } else {
-          par = 4;
-        }
-        return { hole, par, strokes: null };
-      });
+      const course = getCourse(selectedCourse);
+      const newScorecard = course.holes.map(hole => ({
+        ...hole,
+        strokes: null
+      }));
       setScorecard(newScorecard);
       setCurrentHole(1);
       setHoleStrokes('');
     }
-  }, []);
+  }, [selectedCourse]);
+
+  const handleCourseChange = useCallback((newCourseKey) => {
+    if (scorecard.some(hole => hole.strokes !== null)) {
+      if (!window.confirm('Changing courses will reset your current scorecard. Continue?')) {
+        return;
+      }
+    }
+
+    setSelectedCourse(newCourseKey);
+    const course = getCourse(newCourseKey);
+    const newScorecard = course.holes.map(hole => ({
+      ...hole,
+      strokes: null
+    }));
+    setScorecard(newScorecard);
+    setCurrentHole(1);
+    setHoleStrokes('');
+  }, [scorecard]);
 
   const clearAllData = useCallback(() => {
     if (window.confirm('Are you sure you want to clear all shot data? This cannot be undone.')) {
@@ -643,6 +672,26 @@ export default function AIGolfCaddy() {
                   <RotateCcw className="w-4 h-4" />
                   Reset
                 </button>
+              </div>
+
+              <div className="mb-6 p-4 bg-gradient-to-r from-blue-50 to-green-50 rounded-lg border-2 border-blue-200">
+                <label className="block text-sm font-medium mb-2">Select Golf Course</label>
+                <select
+                  value={selectedCourse}
+                  onChange={(e) => handleCourseChange(e.target.value)}
+                  className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
+                >
+                  {getCourseList().map((course) => (
+                    <option key={course.key} value={course.key}>
+                      {course.name} {course.location && `- ${course.location}`} (Par {course.par})
+                    </option>
+                  ))}
+                </select>
+                {denverGolfCourses[selectedCourse].description && (
+                  <p className="text-sm text-gray-600 mt-2">
+                    {denverGolfCourses[selectedCourse].description}
+                  </p>
+                )}
               </div>
 
               {getScorecardStats.holesPlayed > 0 && (
