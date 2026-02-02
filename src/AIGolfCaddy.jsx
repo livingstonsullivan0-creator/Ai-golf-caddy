@@ -1,19 +1,33 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { Trophy, Target, BarChart3, History, Plus, TrendingUp, RotateCcw } from 'lucide-react';
-import { denverGolfCourses, getCourseList, getCourse } from './golfCourses';
+import { denverGolfCourses, getCourseList, getCourse, getCourseGroupList, courseGroups, getCourseKeyFromSelection } from './golfCourses';
 
 export default function AIGolfCaddy() {
   const [activeTab, setActiveTab] = useState('recommend');
 
-  // Load selected course from localStorage or use default
-  const [selectedCourse, setSelectedCourse] = useState(() => {
+  // Load selected course group and variant from localStorage or use defaults
+  const [selectedCourseGroup, setSelectedCourseGroup] = useState(() => {
     try {
-      const saved = localStorage.getItem('selectedCourse');
+      const saved = localStorage.getItem('selectedCourseGroup');
       return saved || 'generic';
     } catch (error) {
       return 'generic';
     }
   });
+
+  const [selectedVariant, setSelectedVariant] = useState(() => {
+    try {
+      const saved = localStorage.getItem('selectedVariant');
+      return saved || 'full';
+    } catch (error) {
+      return 'full';
+    }
+  });
+
+  // Compute the actual course key from group + variant
+  const selectedCourse = useMemo(() => {
+    return getCourseKeyFromSelection(selectedCourseGroup, selectedVariant);
+  }, [selectedCourseGroup, selectedVariant]);
 
   // Load shots from localStorage or use empty array
   const [shots, setShots] = useState(() => {
@@ -119,14 +133,16 @@ export default function AIGolfCaddy() {
     }
   }, [currentHole]);
 
-  // Save selected course to localStorage whenever it changes
+  // Save selected course group and variant to localStorage whenever they change
   useEffect(() => {
     try {
+      localStorage.setItem('selectedCourseGroup', selectedCourseGroup);
+      localStorage.setItem('selectedVariant', selectedVariant);
       localStorage.setItem('selectedCourse', selectedCourse);
     } catch (error) {
       console.error('Error saving selected course to localStorage:', error);
     }
-  }, [selectedCourse]);
+  }, [selectedCourseGroup, selectedVariant, selectedCourse]);
 
   const getCalibratedDistance = useCallback((clubName) => {
     const clubShots = shots.filter(s => s.club === clubName && s.actualDistance);
@@ -346,14 +362,17 @@ export default function AIGolfCaddy() {
     }
   }, [selectedCourse]);
 
-  const handleCourseChange = useCallback((newCourseKey) => {
+  const handleCourseGroupChange = useCallback((newCourseGroup) => {
     if (scorecard.some(hole => hole.strokes !== null)) {
       if (!window.confirm('Changing courses will reset your current scorecard. Continue?')) {
         return;
       }
     }
 
-    setSelectedCourse(newCourseKey);
+    setSelectedCourseGroup(newCourseGroup);
+    // Reset variant to 'full' when changing course groups
+    setSelectedVariant('full');
+    const newCourseKey = getCourseKeyFromSelection(newCourseGroup, 'full');
     const course = getCourse(newCourseKey);
     const newScorecard = course.holes.map(hole => ({
       ...hole,
@@ -363,6 +382,25 @@ export default function AIGolfCaddy() {
     setCurrentHole(1);
     setHoleStrokes('');
   }, [scorecard]);
+
+  const handleVariantChange = useCallback((newVariant) => {
+    if (scorecard.some(hole => hole.strokes !== null)) {
+      if (!window.confirm('Changing course variant will reset your current scorecard. Continue?')) {
+        return;
+      }
+    }
+
+    setSelectedVariant(newVariant);
+    const newCourseKey = getCourseKeyFromSelection(selectedCourseGroup, newVariant);
+    const course = getCourse(newCourseKey);
+    const newScorecard = course.holes.map(hole => ({
+      ...hole,
+      strokes: null
+    }));
+    setScorecard(newScorecard);
+    setCurrentHole(1);
+    setHoleStrokes('');
+  }, [scorecard, selectedCourseGroup]);
 
   const clearAllData = useCallback(() => {
     if (window.confirm('Are you sure you want to clear all shot data? This cannot be undone.')) {
@@ -675,20 +713,44 @@ export default function AIGolfCaddy() {
               </div>
 
               <div className="mb-6 p-4 bg-gradient-to-r from-blue-50 to-green-50 rounded-lg border-2 border-blue-200">
-                <label className="block text-sm font-medium mb-2">Select Golf Course</label>
-                <select
-                  value={selectedCourse}
-                  onChange={(e) => handleCourseChange(e.target.value)}
-                  className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
-                >
-                  {getCourseList().map((course) => (
-                    <option key={course.key} value={course.key}>
-                      {course.name} {course.location && `- ${course.location}`} (Par {course.par})
-                    </option>
-                  ))}
-                </select>
-                {denverGolfCourses[selectedCourse].description && (
-                  <p className="text-sm text-gray-600 mt-2">
+                <div className="grid md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium mb-2">Golf Course</label>
+                    <select
+                      value={selectedCourseGroup}
+                      onChange={(e) => handleCourseGroupChange(e.target.value)}
+                      className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
+                    >
+                      {getCourseGroupList().map((group) => (
+                        <option key={group.key} value={group.key}>
+                          {group.name} - {group.location}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium mb-2">Course Option</label>
+                    <select
+                      value={selectedVariant}
+                      onChange={(e) => handleVariantChange(e.target.value)}
+                      className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
+                      disabled={!courseGroups[selectedCourseGroup]?.hasVariants}
+                    >
+                      <option value="full">
+                        {courseGroups[selectedCourseGroup]?.hasVariants ? 'Full 18 Holes' : 'Full Course'}
+                      </option>
+                      {courseGroups[selectedCourseGroup]?.hasVariants && courseGroups[selectedCourseGroup]?.courses.front9 && (
+                        <option value="front9">Front 9</option>
+                      )}
+                      {courseGroups[selectedCourseGroup]?.hasVariants && courseGroups[selectedCourseGroup]?.courses.back9 && (
+                        <option value="back9">Back 9</option>
+                      )}
+                    </select>
+                  </div>
+                </div>
+                {denverGolfCourses[selectedCourse]?.description && (
+                  <p className="text-sm text-gray-600 mt-3">
                     {denverGolfCourses[selectedCourse].description}
                   </p>
                 )}

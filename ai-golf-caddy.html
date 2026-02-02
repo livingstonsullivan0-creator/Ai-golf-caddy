@@ -224,17 +224,58 @@
             }));
         };
 
+        // Course groups for organized dropdown selection
+        const courseGroups = {
+            cityPark: { name: "City Park", location: "Denver, CO", hasVariants: true, courses: { full: 'cityPark', front9: 'cityParkFront9', back9: 'cityParkBack9' } },
+            greenValleyRanch: { name: "Green Valley Ranch", location: "Denver, CO", hasVariants: true, courses: { full: 'greenValleyRanch', front9: 'greenValleyRanchFront9', back9: 'greenValleyRanchBack9' } },
+            foothills: { name: "Foothills", location: "Denver, CO", hasVariants: true, courses: { full: 'foothills', front9: 'foothillsFront9', back9: 'foothillsBack9' } },
+            kennedy: { name: "Kennedy", location: "Denver, CO", hasVariants: true, courses: { full: 'kennedy', front9: null, back9: null } },
+            wellshire: { name: "Wellshire", location: "Denver, CO", hasVariants: true, courses: { full: 'wellshireGolf', front9: 'wellshireFront9', back9: 'wellshireBack9' } },
+            murphyCreek: { name: "Murphy Creek", location: "Aurora, CO", hasVariants: true, courses: { full: 'murphyCreek', front9: 'murphyCreekFront9', back9: 'murphyCreekBack9' } },
+            meadowHills: { name: "Meadow Hills", location: "Aurora, CO", hasVariants: true, courses: { full: 'meadowHills', front9: 'meadowHillsFront9', back9: 'meadowHillsBack9' } },
+            auroraHills: { name: "Aurora Hills", location: "Aurora, CO", hasVariants: true, courses: { full: 'auroraHills', front9: 'auroraHillsFront9', back9: 'auroraHillsBack9' } },
+            kennedyWest9: { name: "Kennedy West 9", location: "Denver, CO", hasVariants: false, courses: { full: 'kennedyWest9' } },
+            genericPar3: { name: "Generic Par 3", location: "Practice/Short Course", hasVariants: false, courses: { full: 'genericPar3' } },
+            generic: { name: "Generic Course", location: "Default", hasVariants: false, courses: { full: 'generic' } }
+        };
+
+        const getCourseGroupList = () => {
+            return Object.keys(courseGroups).map(key => ({ key, ...courseGroups[key] }));
+        };
+
+        const getCourseKeyFromSelection = (groupKey, variant = 'full') => {
+            const group = courseGroups[groupKey];
+            if (!group) return 'generic';
+            if (!group.hasVariants || variant === 'full') return group.courses.full;
+            if (variant === 'front9' && group.courses.front9) return group.courses.front9;
+            if (variant === 'back9' && group.courses.back9) return group.courses.back9;
+            return group.courses.full;
+        };
+
         function AIGolfCaddy() {
             const [activeTab, setActiveTab] = useState('recommend');
 
-            const [selectedCourse, setSelectedCourse] = useState(() => {
+            const [selectedCourseGroup, setSelectedCourseGroup] = useState(() => {
                 try {
-                    const saved = localStorage.getItem('selectedCourse');
+                    const saved = localStorage.getItem('selectedCourseGroup');
                     return saved || 'generic';
                 } catch (error) {
                     return 'generic';
                 }
             });
+
+            const [selectedVariant, setSelectedVariant] = useState(() => {
+                try {
+                    const saved = localStorage.getItem('selectedVariant');
+                    return saved || 'full';
+                } catch (error) {
+                    return 'full';
+                }
+            });
+
+            const selectedCourse = useMemo(() => {
+                return getCourseKeyFromSelection(selectedCourseGroup, selectedVariant);
+            }, [selectedCourseGroup, selectedVariant]);
 
             const [shots, setShots] = useState(() => {
                 try {
@@ -264,7 +305,9 @@
                 try {
                     const saved = localStorage.getItem('golfScorecard');
                     const savedCourse = localStorage.getItem('scorecardCourse');
-                    const currentCourse = localStorage.getItem('selectedCourse') || 'generic';
+                    const savedGroup = localStorage.getItem('selectedCourseGroup') || 'generic';
+                    const savedVariant = localStorage.getItem('selectedVariant') || 'full';
+                    const currentCourse = getCourseKeyFromSelection(savedGroup, savedVariant);
 
                     if (saved && savedCourse === currentCourse) {
                         return JSON.parse(saved);
@@ -273,7 +316,10 @@
                     console.error('Error loading scorecard:', error);
                 }
 
-                const course = getCourse(selectedCourse);
+                const savedGroup = localStorage.getItem('selectedCourseGroup') || 'generic';
+                const savedVariant = localStorage.getItem('selectedVariant') || 'full';
+                const courseKey = getCourseKeyFromSelection(savedGroup, savedVariant);
+                const course = getCourse(courseKey);
                 return course.holes.map(hole => ({ ...hole, strokes: null }));
             });
 
@@ -331,11 +377,12 @@
 
             useEffect(() => {
                 try {
-                    localStorage.setItem('selectedCourse', selectedCourse);
+                    localStorage.setItem('selectedCourseGroup', selectedCourseGroup);
+                    localStorage.setItem('selectedVariant', selectedVariant);
                 } catch (error) {
                     console.error('Error saving selected course:', error);
                 }
-            }, [selectedCourse]);
+            }, [selectedCourseGroup, selectedVariant]);
 
             const getCalibratedDistance = useCallback((clubName) => {
                 const clubShots = shots.filter(s => s.club === clubName && s.actualDistance);
@@ -549,14 +596,18 @@
                 }
             }, [selectedCourse]);
 
-            const handleCourseChange = useCallback((newCourseKey) => {
+            const handleCourseGroupChange = useCallback((newGroupKey) => {
                 if (scorecard.some(hole => hole.strokes !== null)) {
                     if (!window.confirm('Changing courses will reset your current scorecard. Continue?')) {
                         return;
                     }
                 }
 
-                setSelectedCourse(newCourseKey);
+                setSelectedCourseGroup(newGroupKey);
+                const newVariant = courseGroups[newGroupKey]?.hasVariants ? 'full' : 'full';
+                setSelectedVariant(newVariant);
+
+                const newCourseKey = getCourseKeyFromSelection(newGroupKey, newVariant);
                 const course = getCourse(newCourseKey);
                 const newScorecard = course.holes.map(hole => ({
                     ...hole,
@@ -566,6 +617,25 @@
                 setCurrentHole(1);
                 setHoleStrokes('');
             }, [scorecard]);
+
+            const handleVariantChange = useCallback((newVariant) => {
+                if (scorecard.some(hole => hole.strokes !== null)) {
+                    if (!window.confirm('Changing course options will reset your current scorecard. Continue?')) {
+                        return;
+                    }
+                }
+
+                setSelectedVariant(newVariant);
+                const newCourseKey = getCourseKeyFromSelection(selectedCourseGroup, newVariant);
+                const course = getCourse(newCourseKey);
+                const newScorecard = course.holes.map(hole => ({
+                    ...hole,
+                    strokes: null
+                }));
+                setScorecard(newScorecard);
+                setCurrentHole(1);
+                setHoleStrokes('');
+            }, [scorecard, selectedCourseGroup]);
 
             const clearAllData = useCallback(() => {
                 if (window.confirm('Are you sure you want to clear all shot data? This cannot be undone.')) {
@@ -878,20 +948,43 @@
                                     </div>
 
                                     <div className="mb-6 p-4 bg-gradient-to-r from-blue-50 to-green-50 rounded-lg border-2 border-blue-200">
-                                        <label className="block text-sm font-medium mb-2">Select Golf Course</label>
-                                        <select
-                                            value={selectedCourse}
-                                            onChange={(e) => handleCourseChange(e.target.value)}
-                                            className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
-                                        >
-                                            {getCourseList().map((course) => (
-                                                <option key={course.key} value={course.key}>
-                                                    {course.name} {course.location && `- ${course.location}`} (Par {course.par})
-                                                </option>
-                                            ))}
-                                        </select>
+                                        <div className="grid md:grid-cols-2 gap-4">
+                                            <div>
+                                                <label className="block text-sm font-medium mb-2">Golf Course</label>
+                                                <select
+                                                    value={selectedCourseGroup}
+                                                    onChange={(e) => handleCourseGroupChange(e.target.value)}
+                                                    className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
+                                                >
+                                                    {getCourseGroupList().map((group) => (
+                                                        <option key={group.key} value={group.key}>
+                                                            {group.name} - {group.location}
+                                                        </option>
+                                                    ))}
+                                                </select>
+                                            </div>
+                                            <div>
+                                                <label className="block text-sm font-medium mb-2">Course Option</label>
+                                                <select
+                                                    value={selectedVariant}
+                                                    onChange={(e) => handleVariantChange(e.target.value)}
+                                                    disabled={!courseGroups[selectedCourseGroup]?.hasVariants}
+                                                    className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white disabled:bg-gray-100 disabled:cursor-not-allowed"
+                                                >
+                                                    <option value="full">
+                                                        {courseGroups[selectedCourseGroup]?.hasVariants ? 'Full 18 Holes' : 'Full Course'}
+                                                    </option>
+                                                    {courseGroups[selectedCourseGroup]?.hasVariants && courseGroups[selectedCourseGroup]?.courses.front9 && (
+                                                        <option value="front9">Front 9</option>
+                                                    )}
+                                                    {courseGroups[selectedCourseGroup]?.hasVariants && courseGroups[selectedCourseGroup]?.courses.back9 && (
+                                                        <option value="back9">Back 9</option>
+                                                    )}
+                                                </select>
+                                            </div>
+                                        </div>
                                         {denverGolfCourses[selectedCourse].description && (
-                                            <p className="text-sm text-gray-600 mt-2">
+                                            <p className="text-sm text-gray-600 mt-3">
                                                 {denverGolfCourses[selectedCourse].description}
                                             </p>
                                         )}

@@ -363,3 +363,137 @@ export const getCourseList = () => {
 export const getCourse = (courseKey) => {
   return denverGolfCourses[courseKey] || denverGolfCourses.generic;
 };
+
+// Course groups for dropdown organization
+export const courseGroups = {
+  cityPark: {
+    name: "City Park",
+    location: "Denver, CO",
+    hasVariants: true,
+    courses: {
+      full: 'cityPark',
+      front9: 'cityParkFront9',
+      back9: 'cityParkBack9'
+    }
+  },
+  greenValleyRanch: {
+    name: "Green Valley Ranch",
+    location: "Denver, CO",
+    hasVariants: true,
+    courses: {
+      full: 'greenValleyRanch',
+      front9: 'greenValleyRanchFront9',
+      back9: 'greenValleyRanchBack9'
+    }
+  },
+  foothills: {
+    name: "Foothills",
+    location: "Denver, CO",
+    hasVariants: true,
+    courses: {
+      full: 'foothills',
+      front9: 'foothillsFront9',
+      back9: 'foothillsBack9'
+    }
+  },
+  kennedy: {
+    name: "Kennedy",
+    location: "Denver, CO",
+    hasVariants: true,
+    courses: {
+      full: 'kennedy',
+      front9: null,
+      back9: null
+    }
+  },
+  wellshire: {
+    name: "Wellshire",
+    location: "Denver, CO",
+    hasVariants: true,
+    courses: {
+      full: 'wellshireGolf',
+      front9: 'wellshireFront9',
+      back9: 'wellshireBack9'
+    }
+  },
+  murphyCreek: {
+    name: "Murphy Creek",
+    location: "Aurora, CO",
+    hasVariants: true,
+    courses: {
+      full: 'murphyCreek',
+      front9: 'murphyCreekFront9',
+      back9: 'murphyCreekBack9'
+    }
+  },
+  meadowHills: {
+    name: "Meadow Hills",
+    location: "Aurora, CO",
+    hasVariants: true,
+    courses: {
+      full: 'meadowHills',
+      front9: 'meadowHillsFront9',
+      back9: 'meadowHillsBack9'
+    }
+  },
+  auroraHills: {
+    name: "Aurora Hills",
+    location: "Aurora, CO",
+    hasVariants: true,
+    courses: {
+      full: 'auroraHills',
+      front9: 'auroraHillsFront9',
+      back9: 'auroraHillsBack9'
+    }
+  },
+  kennedyWest9: {
+    name: "Kennedy West 9",
+    location: "Denver, CO",
+    hasVariants: false,
+    courses: {
+      full: 'kennedyWest9'
+    }
+  },
+  genericPar3: {
+    name: "Generic Par 3",
+    location: "Practice/Short Course",
+    hasVariants: false,
+    courses: {
+      full: 'genericPar3'
+    }
+  },
+  generic: {
+    name: "Generic Course",
+    location: "Default",
+    hasVariants: false,
+    courses: {
+      full: 'generic'
+    }
+  }
+};
+
+export const getCourseGroupList = () => {
+  return Object.keys(courseGroups).map(key => ({
+    key,
+    ...courseGroups[key]
+  }));
+};
+
+export const getCourseKeyFromSelection = (groupKey, variant = 'full') => {
+  const group = courseGroups[groupKey];
+  if (!group) return 'generic';
+
+  if (!group.hasVariants || variant === 'full') {
+    return group.courses.full;
+  }
+
+  if (variant === 'front9' && group.courses.front9) {
+    return group.courses.front9;
+  }
+
+  if (variant === 'back9' && group.courses.back9) {
+    return group.courses.back9;
+  }
+
+  return group.courses.full;
+};
