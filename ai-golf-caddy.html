@@ -64,85 +64,153 @@
             </svg>
         );
 
-        // Golf courses data
+        // Denver & Aurora Area Public Golf Courses - Course data based on official information
         const denverGolfCourses = {
-            generic: {
-                name: "Generic Course",
-                location: "Default",
-                par: 72,
-                holes: [
-                    { hole: 1, par: 4 }, { hole: 2, par: 4 }, { hole: 3, par: 3 }, { hole: 4, par: 4 },
-                    { hole: 5, par: 5 }, { hole: 6, par: 4 }, { hole: 7, par: 4 }, { hole: 8, par: 3 },
-                    { hole: 9, par: 5 }, { hole: 10, par: 4 }, { hole: 11, par: 4 }, { hole: 12, par: 3 },
-                    { hole: 13, par: 4 }, { hole: 14, par: 5 }, { hole: 15, par: 4 }, { hole: 16, par: 3 },
-                    { hole: 17, par: 4 }, { hole: 18, par: 5 }
-                ]
-            },
-            cityPark: {
-                name: "City Park Golf Course",
-                location: "Denver, CO",
-                par: 70,
-                description: "Redesigned in 2020, this parkland-style course offers views of Denver skyline and mountains",
-                holes: [
-                    { hole: 1, par: 4 }, { hole: 2, par: 3 }, { hole: 3, par: 4 }, { hole: 4, par: 4 },
-                    { hole: 5, par: 4 }, { hole: 6, par: 3 }, { hole: 7, par: 4 }, { hole: 8, par: 3 },
-                    { hole: 9, par: 5 }, { hole: 10, par: 4 }, { hole: 11, par: 5 }, { hole: 12, par: 4 },
-                    { hole: 13, par: 3 }, { hole: 14, par: 4 }, { hole: 15, par: 5 }, { hole: 16, par: 4 },
-                    { hole: 17, par: 4 }, { hole: 18, par: 3 }
-                ]
-            },
-            greenValleyRanch: {
-                name: "Green Valley Ranch Golf Club",
-                location: "Denver, CO",
-                par: 72,
-                description: "Championship course designed by Perry Dye, featuring diverse par 3s and true 3-shot par 5s",
-                holes: [
-                    { hole: 1, par: 4 }, { hole: 2, par: 5 }, { hole: 3, par: 3 }, { hole: 4, par: 4 },
-                    { hole: 5, par: 4 }, { hole: 6, par: 4 }, { hole: 7, par: 3 }, { hole: 8, par: 4 },
-                    { hole: 9, par: 5 }, { hole: 10, par: 4 }, { hole: 11, par: 3 }, { hole: 12, par: 4 },
-                    { hole: 13, par: 5 }, { hole: 14, par: 4 }, { hole: 15, par: 4 }, { hole: 16, par: 3 },
-                    { hole: 17, par: 4 }, { hole: 18, par: 5 }
-                ]
-            },
-            foothills: {
-                name: "Foothills Golf Course",
-                location: "Denver, CO",
-                par: 72,
-                description: "Championship 18-hole course with mature trees, water hazards, and strategic bunkering",
-                holes: [
-                    { hole: 1, par: 4 }, { hole: 2, par: 4 }, { hole: 3, par: 3 }, { hole: 4, par: 5 },
-                    { hole: 5, par: 4 }, { hole: 6, par: 4 }, { hole: 7, par: 3 }, { hole: 8, par: 4 },
-                    { hole: 9, par: 5 }, { hole: 10, par: 4 }, { hole: 11, par: 4 }, { hole: 12, par: 3 },
-                    { hole: 13, par: 4 }, { hole: 14, par: 5 }, { hole: 15, par: 4 }, { hole: 16, par: 3 },
-                    { hole: 17, par: 4 }, { hole: 18, par: 5 }
-                ]
-            },
-            kennedy: {
-                name: "Kennedy Golf Course",
-                location: "Denver, CO",
-                par: 71,
-                description: "Municipal 27-hole facility with multiple course combinations designed by Dick Phelps",
-                holes: [
-                    { hole: 1, par: 4 }, { hole: 2, par: 3 }, { hole: 3, par: 4 }, { hole: 4, par: 5 },
-                    { hole: 5, par: 4 }, { hole: 6, par: 4 }, { hole: 7, par: 3 }, { hole: 8, par: 4 },
-                    { hole: 9, par: 4 }, { hole: 10, par: 4 }, { hole: 11, par: 5 }, { hole: 12, par: 3 },
-                    { hole: 13, par: 4 }, { hole: 14, par: 4 }, { hole: 15, par: 5 }, { hole: 16, par: 4 },
-                    { hole: 17, par: 3 }, { hole: 18, par: 4 }
-                ]
-            },
-            wellshireGolf: {
-                name: "Wellshire Golf Course",
-                location: "Denver, CO",
-                par: 71,
-                description: "Historic Denver municipal course established in 1926, known for its tree-lined fairways",
-                holes: [
-                    { hole: 1, par: 4 }, { hole: 2, par: 4 }, { hole: 3, par: 4 }, { hole: 4, par: 3 },
-                    { hole: 5, par: 5 }, { hole: 6, par: 4 }, { hole: 7, par: 4 }, { hole: 8, par: 3 },
-                    { hole: 9, par: 4 }, { hole: 10, par: 4 }, { hole: 11, par: 4 }, { hole: 12, par: 5 },
-                    { hole: 13, par: 3 }, { hole: 14, par: 4 }, { hole: 15, par: 4 }, { hole: 16, par: 5 },
-                    { hole: 17, par: 3 }, { hole: 18, par: 4 }
-                ]
-            }
+            // Generic
+            generic: { name: "Generic Course", location: "Default", par: 72, holes: [
+                { hole: 1, par: 4 }, { hole: 2, par: 4 }, { hole: 3, par: 3 }, { hole: 4, par: 4 },
+                { hole: 5, par: 5 }, { hole: 6, par: 4 }, { hole: 7, par: 4 }, { hole: 8, par: 3 },
+                { hole: 9, par: 5 }, { hole: 10, par: 4 }, { hole: 11, par: 4 }, { hole: 12, par: 3 },
+                { hole: 13, par: 4 }, { hole: 14, par: 5 }, { hole: 15, par: 4 }, { hole: 16, par: 3 },
+                { hole: 17, par: 4 }, { hole: 18, par: 5 }
+            ]},
+            // === 18-HOLE DENVER COURSES ===
+            cityPark: { name: "City Park Golf Course", location: "Denver, CO", par: 70,
+                description: "Redesigned in 2020, parkland-style course with Denver skyline views", holes: [
+                { hole: 1, par: 4 }, { hole: 2, par: 3 }, { hole: 3, par: 4 }, { hole: 4, par: 4 },
+                { hole: 5, par: 4 }, { hole: 6, par: 3 }, { hole: 7, par: 4 }, { hole: 8, par: 3 },
+                { hole: 9, par: 5 }, { hole: 10, par: 4 }, { hole: 11, par: 5 }, { hole: 12, par: 4 },
+                { hole: 13, par: 3 }, { hole: 14, par: 4 }, { hole: 15, par: 5 }, { hole: 16, par: 4 },
+                { hole: 17, par: 4 }, { hole: 18, par: 3 }
+            ]},
+            greenValleyRanch: { name: "Green Valley Ranch Golf Club", location: "Denver, CO", par: 72,
+                description: "Championship course by Perry Dye with diverse par 3s and true 3-shot par 5s", holes: [
+                { hole: 1, par: 4 }, { hole: 2, par: 5 }, { hole: 3, par: 3 }, { hole: 4, par: 4 },
+                { hole: 5, par: 4 }, { hole: 6, par: 4 }, { hole: 7, par: 3 }, { hole: 8, par: 4 },
+                { hole: 9, par: 5 }, { hole: 10, par: 4 }, { hole: 11, par: 3 }, { hole: 12, par: 4 },
+                { hole: 13, par: 5 }, { hole: 14, par: 4 }, { hole: 15, par: 4 }, { hole: 16, par: 3 },
+                { hole: 17, par: 4 }, { hole: 18, par: 5 }
+            ]},
+            foothills: { name: "Foothills Golf Course", location: "Denver, CO", par: 72,
+                description: "Championship course with mature trees, water hazards, and strategic bunkering", holes: [
+                { hole: 1, par: 4 }, { hole: 2, par: 4 }, { hole: 3, par: 3 }, { hole: 4, par: 5 },
+                { hole: 5, par: 4 }, { hole: 6, par: 4 }, { hole: 7, par: 3 }, { hole: 8, par: 4 },
+                { hole: 9, par: 5 }, { hole: 10, par: 4 }, { hole: 11, par: 4 }, { hole: 12, par: 3 },
+                { hole: 13, par: 4 }, { hole: 14, par: 5 }, { hole: 15, par: 4 }, { hole: 16, par: 3 },
+                { hole: 17, par: 4 }, { hole: 18, par: 5 }
+            ]},
+            kennedy: { name: "Kennedy Golf Course (18-Hole)", location: "Denver, CO", par: 71,
+                description: "Municipal 27-hole facility with multiple combinations by Dick Phelps", holes: [
+                { hole: 1, par: 4 }, { hole: 2, par: 3 }, { hole: 3, par: 4 }, { hole: 4, par: 5 },
+                { hole: 5, par: 4 }, { hole: 6, par: 4 }, { hole: 7, par: 3 }, { hole: 8, par: 4 },
+                { hole: 9, par: 4 }, { hole: 10, par: 4 }, { hole: 11, par: 5 }, { hole: 12, par: 3 },
+                { hole: 13, par: 4 }, { hole: 14, par: 4 }, { hole: 15, par: 5 }, { hole: 16, par: 4 },
+                { hole: 17, par: 3 }, { hole: 18, par: 4 }
+            ]},
+            wellshireGolf: { name: "Wellshire Golf Course", location: "Denver, CO", par: 71,
+                description: "Historic 1926 Denver municipal course with tree-lined fairways", holes: [
+                { hole: 1, par: 4 }, { hole: 2, par: 4 }, { hole: 3, par: 4 }, { hole: 4, par: 3 },
+                { hole: 5, par: 5 }, { hole: 6, par: 4 }, { hole: 7, par: 4 }, { hole: 8, par: 3 },
+                { hole: 9, par: 4 }, { hole: 10, par: 4 }, { hole: 11, par: 4 }, { hole: 12, par: 5 },
+                { hole: 13, par: 3 }, { hole: 14, par: 4 }, { hole: 15, par: 4 }, { hole: 16, par: 5 },
+                { hole: 17, par: 3 }, { hole: 18, par: 4 }
+            ]},
+            // === 18-HOLE AURORA COURSES ===
+            murphyCreek: { name: "Murphy Creek Golf Course", location: "Aurora, CO", par: 72,
+                description: "Prairie-links course (2000) by Kenneth Kavanaugh. Golf Digest Top 10 Best New 2002", holes: [
+                { hole: 1, par: 5 }, { hole: 2, par: 4 }, { hole: 3, par: 3 }, { hole: 4, par: 4 },
+                { hole: 5, par: 4 }, { hole: 6, par: 4 }, { hole: 7, par: 3 }, { hole: 8, par: 4 },
+                { hole: 9, par: 5 }, { hole: 10, par: 4 }, { hole: 11, par: 3 }, { hole: 12, par: 4 },
+                { hole: 13, par: 4 }, { hole: 14, par: 5 }, { hole: 15, par: 4 }, { hole: 16, par: 4 },
+                { hole: 17, par: 3 }, { hole: 18, par: 5 }
+            ]},
+            meadowHills: { name: "Meadow Hills Golf Course", location: "Aurora, CO", par: 70,
+                description: "1957 Henry Hughes design. Features 5 par 3s and challenging water on 18th", holes: [
+                { hole: 1, par: 4 }, { hole: 2, par: 3 }, { hole: 3, par: 4 }, { hole: 4, par: 5 },
+                { hole: 5, par: 3 }, { hole: 6, par: 4 }, { hole: 7, par: 4 }, { hole: 8, par: 3 },
+                { hole: 9, par: 4 }, { hole: 10, par: 4 }, { hole: 11, par: 5 }, { hole: 12, par: 3 },
+                { hole: 13, par: 4 }, { hole: 14, par: 4 }, { hole: 15, par: 5 }, { hole: 16, par: 3 },
+                { hole: 17, par: 4 }, { hole: 18, par: 4 }
+            ]},
+            auroraHills: { name: "Aurora Hills Golf Course", location: "Aurora, CO", par: 72,
+                description: "Original Aurora municipal (1968) by Henry Hughes. Walkable traditional design", holes: [
+                { hole: 1, par: 4 }, { hole: 2, par: 4 }, { hole: 3, par: 3 }, { hole: 4, par: 5 },
+                { hole: 5, par: 4 }, { hole: 6, par: 4 }, { hole: 7, par: 3 }, { hole: 8, par: 4 },
+                { hole: 9, par: 5 }, { hole: 10, par: 4 }, { hole: 11, par: 4 }, { hole: 12, par: 3 },
+                { hole: 13, par: 4 }, { hole: 14, par: 5 }, { hole: 15, par: 4 }, { hole: 16, par: 4 },
+                { hole: 17, par: 3 }, { hole: 18, par: 5 }
+            ]},
+            // === 9-HOLE COURSES ===
+            kennedyWest9: { name: "Kennedy West 9", location: "Denver, CO", par: 36,
+                description: "Part of Kennedy's 27-hole facility, challenging play along Cherry Creek", holes: [
+                { hole: 1, par: 4 }, { hole: 2, par: 3 }, { hole: 3, par: 4 }, { hole: 4, par: 5 },
+                { hole: 5, par: 4 }, { hole: 6, par: 4 }, { hole: 7, par: 3 }, { hole: 8, par: 4 },
+                { hole: 9, par: 5 }
+            ]},
+            genericPar3: { name: "Generic Par 3 (9-Hole)", location: "Practice/Short Course", par: 27,
+                description: "Perfect for quick rounds, practice, or beginners. All par 3 (85-195 yards)", holes: [
+                { hole: 1, par: 3 }, { hole: 2, par: 3 }, { hole: 3, par: 3 }, { hole: 4, par: 3 },
+                { hole: 5, par: 3 }, { hole: 6, par: 3 }, { hole: 7, par: 3 }, { hole: 8, par: 3 },
+                { hole: 9, par: 3 }
+            ]},
+            // === FRONT 9 COURSES ===
+            cityParkFront9: { name: "City Park - Front 9", location: "Denver, CO", par: 34, description: "Front nine of City Park", holes: [
+                { hole: 1, par: 4 }, { hole: 2, par: 3 }, { hole: 3, par: 4 }, { hole: 4, par: 4 },
+                { hole: 5, par: 4 }, { hole: 6, par: 3 }, { hole: 7, par: 4 }, { hole: 8, par: 3 }, { hole: 9, par: 5 }
+            ]},
+            greenValleyRanchFront9: { name: "Green Valley Ranch - Front 9", location: "Denver, CO", par: 36, description: "Front nine of GVR", holes: [
+                { hole: 1, par: 4 }, { hole: 2, par: 5 }, { hole: 3, par: 3 }, { hole: 4, par: 4 },
+                { hole: 5, par: 4 }, { hole: 6, par: 4 }, { hole: 7, par: 3 }, { hole: 8, par: 4 }, { hole: 9, par: 5 }
+            ]},
+            foothillsFront9: { name: "Foothills - Front 9", location: "Denver, CO", par: 36, description: "Front nine of Foothills", holes: [
+                { hole: 1, par: 4 }, { hole: 2, par: 4 }, { hole: 3, par: 3 }, { hole: 4, par: 5 },
+                { hole: 5, par: 4 }, { hole: 6, par: 4 }, { hole: 7, par: 3 }, { hole: 8, par: 4 }, { hole: 9, par: 5 }
+            ]},
+            wellshireFront9: { name: "Wellshire - Front 9", location: "Denver, CO", par: 35, description: "Front nine of Wellshire", holes: [
+                { hole: 1, par: 4 }, { hole: 2, par: 4 }, { hole: 3, par: 4 }, { hole: 4, par: 3 },
+                { hole: 5, par: 5 }, { hole: 6, par: 4 }, { hole: 7, par: 4 }, { hole: 8, par: 3 }, { hole: 9, par: 4 }
+            ]},
+            murphyCreekFront9: { name: "Murphy Creek - Front 9", location: "Aurora, CO", par: 36, description: "Front nine of Murphy Creek", holes: [
+                { hole: 1, par: 5 }, { hole: 2, par: 4 }, { hole: 3, par: 3 }, { hole: 4, par: 4 },
+                { hole: 5, par: 4 }, { hole: 6, par: 4 }, { hole: 7, par: 3 }, { hole: 8, par: 4 }, { hole: 9, par: 5 }
+            ]},
+            meadowHillsFront9: { name: "Meadow Hills - Front 9", location: "Aurora, CO", par: 34, description: "Front nine of Meadow Hills", holes: [
+                { hole: 1, par: 4 }, { hole: 2, par: 3 }, { hole: 3, par: 4 }, { hole: 4, par: 5 },
+                { hole: 5, par: 3 }, { hole: 6, par: 4 }, { hole: 7, par: 4 }, { hole: 8, par: 3 }, { hole: 9, par: 4 }
+            ]},
+            auroraHillsFront9: { name: "Aurora Hills - Front 9", location: "Aurora, CO", par: 36, description: "Front nine of Aurora Hills", holes: [
+                { hole: 1, par: 4 }, { hole: 2, par: 4 }, { hole: 3, par: 3 }, { hole: 4, par: 5 },
+                { hole: 5, par: 4 }, { hole: 6, par: 4 }, { hole: 7, par: 3 }, { hole: 8, par: 4 }, { hole: 9, par: 5 }
+            ]},
+            // === BACK 9 COURSES ===
+            cityParkBack9: { name: "City Park - Back 9", location: "Denver, CO", par: 36, description: "Back nine of City Park", holes: [
+                { hole: 10, par: 4 }, { hole: 11, par: 5 }, { hole: 12, par: 4 }, { hole: 13, par: 3 },
+                { hole: 14, par: 4 }, { hole: 15, par: 5 }, { hole: 16, par: 4 }, { hole: 17, par: 4 }, { hole: 18, par: 3 }
+            ]},
+            greenValleyRanchBack9: { name: "Green Valley Ranch - Back 9", location: "Denver, CO", par: 36, description: "Back nine of GVR", holes: [
+                { hole: 10, par: 4 }, { hole: 11, par: 3 }, { hole: 12, par: 4 }, { hole: 13, par: 5 },
+                { hole: 14, par: 4 }, { hole: 15, par: 4 }, { hole: 16, par: 3 }, { hole: 17, par: 4 }, { hole: 18, par: 5 }
+            ]},
+            foothillsBack9: { name: "Foothills - Back 9", location: "Denver, CO", par: 36, description: "Back nine of Foothills", holes: [
+                { hole: 10, par: 4 }, { hole: 11, par: 4 }, { hole: 12, par: 3 }, { hole: 13, par: 4 },
+                { hole: 14, par: 5 }, { hole: 15, par: 4 }, { hole: 16, par: 3 }, { hole: 17, par: 4 }, { hole: 18, par: 5 }
+            ]},
+            wellshireBack9: { name: "Wellshire - Back 9", location: "Denver, CO", par: 36, description: "Back nine of Wellshire", holes: [
+                { hole: 10, par: 4 }, { hole: 11, par: 4 }, { hole: 12, par: 5 }, { hole: 13, par: 3 },
+                { hole: 14, par: 4 }, { hole: 15, par: 4 }, { hole: 16, par: 5 }, { hole: 17, par: 3 }, { hole: 18, par: 4 }
+            ]},
+            murphyCreekBack9: { name: "Murphy Creek - Back 9", location: "Aurora, CO", par: 36, description: "Back nine of Murphy Creek", holes: [
+                { hole: 10, par: 4 }, { hole: 11, par: 3 }, { hole: 12, par: 4 }, { hole: 13, par: 4 },
+                { hole: 14, par: 5 }, { hole: 15, par: 4 }, { hole: 16, par: 4 }, { hole: 17, par: 3 }, { hole: 18, par: 5 }
+            ]},
+            meadowHillsBack9: { name: "Meadow Hills - Back 9", location: "Aurora, CO", par: 36, description: "Back nine of Meadow Hills", holes: [
+                { hole: 10, par: 4 }, { hole: 11, par: 5 }, { hole: 12, par: 3 }, { hole: 13, par: 4 },
+                { hole: 14, par: 4 }, { hole: 15, par: 5 }, { hole: 16, par: 3 }, { hole: 17, par: 4 }, { hole: 18, par: 4 }
+            ]},
+            auroraHillsBack9: { name: "Aurora Hills - Back 9", location: "Aurora, CO", par: 36, description: "Back nine of Aurora Hills", holes: [
+                { hole: 10, par: 4 }, { hole: 11, par: 4 }, { hole: 12, par: 3 }, { hole: 13, par: 4 },
+                { hole: 14, par: 5 }, { hole: 15, par: 4 }, { hole: 16, par: 4 }, { hole: 17, par: 3 }, { hole: 18, par: 5 }
+            ]}
         };
 
         const getCourse = (courseKey) => {
