@@ -738,13 +738,18 @@ export default function AIGolfCaddy() {
                       disabled={!courseGroups[selectedCourseGroup]?.hasVariants}
                     >
                       <option value="full">
-                        {courseGroups[selectedCourseGroup]?.hasVariants ? 'Full 18 Holes' : 'Full Course'}
+                        {courseGroups[selectedCourseGroup]?.variantLabels?.full ||
+                         (courseGroups[selectedCourseGroup]?.hasVariants ? 'Full 18 Holes' : 'Full Course')}
                       </option>
                       {courseGroups[selectedCourseGroup]?.hasVariants && courseGroups[selectedCourseGroup]?.courses.front9 && (
-                        <option value="front9">Front 9</option>
+                        <option value="front9">
+                          {courseGroups[selectedCourseGroup]?.variantLabels?.front9 || 'Front 9'}
+                        </option>
                       )}
                       {courseGroups[selectedCourseGroup]?.hasVariants && courseGroups[selectedCourseGroup]?.courses.back9 && (
-                        <option value="back9">Back 9</option>
+                        <option value="back9">
+                          {courseGroups[selectedCourseGroup]?.variantLabels?.back9 || 'Back 9'}
+                        </option>
                       )}
                     </select>
                   </div>

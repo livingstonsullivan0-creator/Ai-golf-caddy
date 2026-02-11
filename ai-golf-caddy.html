@@ -147,6 +147,18 @@
                 { hole: 5, par: 4 }, { hole: 6, par: 4 }, { hole: 7, par: 3 }, { hole: 8, par: 4 },
                 { hole: 9, par: 5 }
             ]},
+            kennedyCreek9: { name: "Kennedy Creek 9", location: "Denver, CO", par: 35,
+                description: "Part of Kennedy's 27-hole facility, the Creek 9 features scenic creek-side holes and strategic challenges", holes: [
+                { hole: 1, par: 4 }, { hole: 2, par: 4 }, { hole: 3, par: 3 }, { hole: 4, par: 4 },
+                { hole: 5, par: 5 }, { hole: 6, par: 4 }, { hole: 7, par: 3 }, { hole: 8, par: 4 },
+                { hole: 9, par: 4 }
+            ]},
+            kennedyBabeLind9: { name: "Kennedy Babe Lind 9", location: "Denver, CO", par: 36,
+                description: "Part of Kennedy's 27-hole facility, the Babe Lind 9 offers varied terrain and engaging shot-making opportunities", holes: [
+                { hole: 1, par: 4 }, { hole: 2, par: 5 }, { hole: 3, par: 3 }, { hole: 4, par: 4 },
+                { hole: 5, par: 4 }, { hole: 6, par: 4 }, { hole: 7, par: 3 }, { hole: 8, par: 4 },
+                { hole: 9, par: 5 }
+            ]},
             genericPar3: { name: "Generic Par 3 (9-Hole)", location: "Practice/Short Course", par: 27,
                 description: "Perfect for quick rounds, practice, or beginners. All par 3 (85-195 yards)", holes: [
                 { hole: 1, par: 3 }, { hole: 2, par: 3 }, { hole: 3, par: 3 }, { hole: 4, par: 3 },
@@ -229,7 +241,7 @@
             cityPark: { name: "City Park", location: "Denver, CO", hasVariants: true, courses: { full: 'cityPark', front9: 'cityParkFront9', back9: 'cityParkBack9' } },
             greenValleyRanch: { name: "Green Valley Ranch", location: "Denver, CO", hasVariants: true, courses: { full: 'greenValleyRanch', front9: 'greenValleyRanchFront9', back9: 'greenValleyRanchBack9' } },
             foothills: { name: "Foothills", location: "Denver, CO", hasVariants: true, courses: { full: 'foothills', front9: 'foothillsFront9', back9: 'foothillsBack9' } },
-            kennedy: { name: "Kennedy", location: "Denver, CO", hasVariants: true, courses: { full: 'kennedy', front9: null, back9: null } },
+            kennedy: { name: "Kennedy", location: "Denver, CO", hasVariants: true, variantLabels: { full: '18 Holes', front9: 'Creek 9', back9: 'Babe Lind 9' }, courses: { full: 'kennedy', front9: 'kennedyCreek9', back9: 'kennedyBabeLind9' } },
             wellshire: { name: "Wellshire", location: "Denver, CO", hasVariants: true, courses: { full: 'wellshireGolf', front9: 'wellshireFront9', back9: 'wellshireBack9' } },
             murphyCreek: { name: "Murphy Creek", location: "Aurora, CO", hasVariants: true, courses: { full: 'murphyCreek', front9: 'murphyCreekFront9', back9: 'murphyCreekBack9' } },
             meadowHills: { name: "Meadow Hills", location: "Aurora, CO", hasVariants: true, courses: { full: 'meadowHills', front9: 'meadowHillsFront9', back9: 'meadowHillsBack9' } },
@@ -972,13 +984,18 @@
                                                     className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white disabled:bg-gray-100 disabled:cursor-not-allowed"
                                                 >
                                                     <option value="full">
-                                                        {courseGroups[selectedCourseGroup]?.hasVariants ? 'Full 18 Holes' : 'Full Course'}
+                                                        {courseGroups[selectedCourseGroup]?.variantLabels?.full ||
+                                                         (courseGroups[selectedCourseGroup]?.hasVariants ? 'Full 18 Holes' : 'Full Course')}
                                                     </option>
                                                     {courseGroups[selectedCourseGroup]?.hasVariants && courseGroups[selectedCourseGroup]?.courses.front9 && (
-                                                        <option value="front9">Front 9</option>
+                                                        <option value="front9">
+                                                            {courseGroups[selectedCourseGroup]?.variantLabels?.front9 || 'Front 9'}
+                                                        </option>
                                                     )}
                                                     {courseGroups[selectedCourseGroup]?.hasVariants && courseGroups[selectedCourseGroup]?.courses.back9 && (
-                                                        <option value="back9">Back 9</option>
+                                                        <option value="back9">
+                                                            {courseGroups[selectedCourseGroup]?.variantLabels?.back9 || 'Back 9'}
+                                                        </option>
                                                     )}
                                                 </select>
                                             </div>

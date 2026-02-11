@@ -154,6 +154,32 @@ export const denverGolfCourses = {
     ]
   },
 
+  kennedyCreek9: {
+    name: "Kennedy Creek 9",
+    location: "Denver, CO",
+    par: 35,
+    description: "Part of Kennedy's 27-hole facility, the Creek 9 features scenic creek-side holes and strategic challenges",
+    website: "https://www.cityofdenvergolf.com/kennedy-golf-course/",
+    holes: [
+      { hole: 1, par: 4 }, { hole: 2, par: 4 }, { hole: 3, par: 3 }, { hole: 4, par: 4 },
+      { hole: 5, par: 5 }, { hole: 6, par: 4 }, { hole: 7, par: 3 }, { hole: 8, par: 4 },
+      { hole: 9, par: 4 }
+    ]
+  },
+
+  kennedyBabeLind9: {
+    name: "Kennedy Babe Lind 9",
+    location: "Denver, CO",
+    par: 36,
+    description: "Part of Kennedy's 27-hole facility, the Babe Lind 9 offers varied terrain and engaging shot-making opportunities",
+    website: "https://www.cityofdenvergolf.com/kennedy-golf-course/",
+    holes: [
+      { hole: 1, par: 4 }, { hole: 2, par: 5 }, { hole: 3, par: 3 }, { hole: 4, par: 4 },
+      { hole: 5, par: 4 }, { hole: 6, par: 4 }, { hole: 7, par: 3 }, { hole: 8, par: 4 },
+      { hole: 9, par: 5 }
+    ]
+  },
+
   genericPar3: {
     name: "Generic Par 3 (9-Hole)",
     location: "Practice/Short Course",
@@ -400,10 +426,15 @@ export const courseGroups = {
     name: "Kennedy",
     location: "Denver, CO",
     hasVariants: true,
+    variantLabels: {
+      full: '18 Holes',
+      front9: 'Creek 9',
+      back9: 'Babe Lind 9'
+    },
     courses: {
       full: 'kennedy',
-      front9: null,
-      back9: null
+      front9: 'kennedyCreek9',
+      back9: 'kennedyBabeLind9'
     }
   },
   wellshire: {
